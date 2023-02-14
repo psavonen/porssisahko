@@ -12,4 +12,3 @@ Raspberry Pi Zero
 
 Skripu perustuu https://porssisahko.net/ APIin.
 
-En ole Python ammattilainen.
