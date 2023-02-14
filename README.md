@@ -6,7 +6,10 @@ Näyttää pörssisähkön tämän hetkisen hinnan, 48h sisällää tulevan kall
 **Tarvikkeet**
 
 Raspberry Pi Zero
-1602 LCD i2c näyttö
+1602 LCD 
+
+i2c näyttö
+
 
 Skripu perustuu https://porssisahko.net/ APIin.
 
