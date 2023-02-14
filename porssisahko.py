@@ -87,8 +87,6 @@ def main_price_thread():
 
             ylinhintaaikaindex = sekohinta[0].index(ylinhinta)
             ylinhintaaika = sekohinta[1][ylinhintaaikaindex]
-            print(ylinhinta, " ", ylinhintaaika)
-            print(alinhinta, " ", alinhintaaika)
             sleep(ISOVIIVE)
     except:
         print("Main price fail")
@@ -103,7 +101,6 @@ def spot_price_thread():
             nyt_aika = getTime()
             o = json.loads(spotresponse.text)
             spothinta = o['price']
-            print("Spothinta ", spothinta, " ", nyt_aika)
             sleep(ISOVIIVE)
     except:
         print("Spot price fail")
