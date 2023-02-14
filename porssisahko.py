@@ -2,13 +2,10 @@ import requests
 from RPLCD import i2c
 from time import sleep
 import json
-import calendar
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
-import zoneinfo
 import pytz
 import threading
-import queue
 
 running = True
 lcdmode = 'i2c'
