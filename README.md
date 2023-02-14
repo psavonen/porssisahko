@@ -1,7 +1,7 @@
 # porssisahko
 Soomalaanen Pörssisähkön hinnan ilmoittava ohjelema Raspberry Pi Zerolle
 
-Näyttää pörssisähkön tämän hetkisen hinnan, 48h sisällää tulevan kalleimman hinnan ja halvimman hinnan alkuaikoineen.
+Näyttää pörssisähkön tämän hetkisen hinnan + muutostenhaku klo ajan, 48h sisällä tulevan kalleimman hinnan ja halvimman hinnan alkuaikoineen.
 
 **Tarvikkeet**
 
