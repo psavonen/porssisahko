@@ -33,6 +33,7 @@ ylinhintaaika = 0
 alinhintaaika = 0
 nyt_aika = 0
 ISOVIIVE = 43200
+SPOTVIIVE = 3600
 LCDVIIVE = 6
 j = 0
 
@@ -101,7 +102,7 @@ def spot_price_thread():
             nyt_aika = getTime()
             o = json.loads(spotresponse.text)
             spothinta = o['price']
-            sleep(ISOVIIVE)
+            sleep(SPOTVIIVE)
     except:
         print("Spot price fail")
 
