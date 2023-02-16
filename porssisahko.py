@@ -19,7 +19,9 @@ port = 1
 lcd = i2c.CharLCD(i2c_expander, address, port=port, charmap=charmap, cols=cols, rows=rows)
 
 utc = pytz.UTC
+api_url = "https://api.porssisahko.net/v1/latest-prices.json"
 
+singleyear = datetime.utcnow().strftime("%Y")
 date = datetime.now(timezone.utc)
 nyt_str = date.strftime("%Y-%m-%dT%H:%M:%S")
 date = datetime.strptime(nyt_str, "%Y-%m-%dT%H:%M:%S")
@@ -32,7 +34,7 @@ alinhinta = 0
 ylinhintaaika = 0
 alinhintaaika = 0
 nyt_aika = 0
-ISOVIIVE = 43200
+ISOVIIVE = 3600
 SPOTVIIVE = 3600
 LCDVIIVE = 6
 j = 0
@@ -46,26 +48,21 @@ def getTime():
 def timeFinder(target):
     return datetime.strptime(target, "%Y-%m-%dT%H:%M:%S.%fZ")
 
-nyt_oikea = getTime()
-singledate = datetime.utcnow().strftime("%Y-%m-%d")
-singleyear = datetime.utcnow().strftime("%Y")
-singlehour = nyt_oikea.strftime("%H")
-api_url = "https://api.porssisahko.net/v1/latest-prices.json"
-spot_url  = "https://api.porssisahko.net/v1/price.json?date="
-spot_url += singledate
-spot_url += "&hour="
-spot_url += singlehour
+nyt_aika = getTime()
 
 def main_price_thread():
     global ylinhinta
     global alinhinta
     global ylinhintaaika
     global alinhintaaika
+    global spothinta
+    global nyt_aika
     try:
-       while(running):
+        while(running):
             print("Main price start")
             response = requests.get(api_url)
             y = json.loads(response.text)
+            nyt_oikea = getTime()
             for i in y['prices']:
                 alinhinta_t = timeFinder(i['startDate'])
                 ylinhinta_t = timeFinder(i['endDate'])
@@ -88,9 +85,11 @@ def main_price_thread():
 
             ylinhintaaikaindex = sekohinta[0].index(ylinhinta)
             ylinhintaaika = sekohinta[1][ylinhintaaikaindex]
+            print(ylinhinta, " ", ylinhintaaika)
+            print(alinhinta, " ", alinhintaaika)
             sleep(ISOVIIVE)
-    except:
-        print("Main price fail")
+    except Exception as e: 
+       print(e)
 
 def spot_price_thread():
     global spothinta
@@ -98,15 +97,23 @@ def spot_price_thread():
     try:
         while(running):
             print("Spot price start")
-            spotresponse = requests.get(spot_url)
             nyt_aika = getTime()
+            singledate = datetime.utcnow().strftime("%Y-%m-%d")
+            singlehour = nyt_aika.strftime("%H")
+            spot_url  = "https://api.porssisahko.net/v1/price.json?date="
+            spot_url += singledate
+            spot_url += "&hour="
+            spot_url += singlehour
+            spotresponse = requests.get(spot_url)
             o = json.loads(spotresponse.text)
             spothinta = o['price']
+            logging.debug(str(spothinta))
+            print("Spothinta ", spothinta, " ", nyt_aika)
             sleep(SPOTVIIVE)
-    except:
-        print("Spot price fail")
+    except Exception as e: 
+       print(e)
 
-def price_print():
+def price_print_thread():
     global spothinta
     global ylinhinta
     global alinhinta
@@ -124,6 +131,8 @@ def price_print():
             ylinaikapress = ylinaikapress.strftime("%d-%m %H:%M")
             alinaikapress = alinaikapress.strftime("%d-%m %H:%M")
             nythinta = "Nyt: " + str(spothinta) + "       " + str(nytaika)
+            log = "Printista: ", str(spothinta)
+            logging.debug(log)
             ylinhintaprint = "Ylin: " + str(ylinhinta) + "     " + str(ylinaikapress).replace(str(singleyear) + "-", "")
             alinhintaprint = "Alin: " + str(alinhinta) + "      " + str(alinaikapress).replace(str(singleyear) + "-", "")
             lcd.clear()
@@ -135,14 +144,16 @@ def price_print():
             lcd.clear()
             lcd.write_string(alinhintaprint)
             sleep(LCDVIIVE)
-        except:
-            print(nyt_aika)
+        except Exception as e: 
+            print(e)
 if __name__ == "__main__":
     s = threading.Thread(target=main_price_thread, args=())
     d = threading.Thread(target=spot_price_thread, args=())
-    f = threading.Thread(target=price_print, args=())
+    f = threading.Thread(target=price_print_thread, args=())
     s.start()
     d.start()
     f.start()
+
+
 
 
