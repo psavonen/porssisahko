@@ -10,5 +10,8 @@ Raspberry Pi Zero
 1602 LCD i2c näyttö
 
 
+Mukana myös porssishko24h.py joka näyttää tulevan ylimmän ja alimman hinnan 24h sisällä
+
+
 Skripu perustuu https://porssisahko.net/ APIin.
 
