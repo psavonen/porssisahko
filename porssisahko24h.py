@@ -7,7 +7,6 @@ from zoneinfo import ZoneInfo
 import pytz
 import threading
 import logging
-logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', filename='/home/pahapaavali/porssisahko.log', encoding='utf-8', level=logging.DEBUG)
 
 running = True
 lcdmode = 'i2c'
@@ -122,7 +121,6 @@ def spot_price_thread():
             spotresponse = requests.get(spot_url)
             o = json.loads(spotresponse.text)
             spothinta = o['price']
-            logging.debug(str(spothinta))
             print("Spothinta ", spothinta, " ", nyt_aika)
             sleep(SPOTVIIVE)
     except Exception as e: 
@@ -146,8 +144,6 @@ def price_print():
             ylinaikapress = ylinaikapress.strftime("%d-%m %H:%M")
             alinaikapress = alinaikapress.strftime("%d-%m %H:%M")
             nythinta = "Nyt: " + str(spothinta) + "       " + str(nytaika)
-            log = "Printista: ", str(spothinta)
-            logging.debug(log)
             ylinhintaprint = "Ylin: " + str(ylinhinta) + "     " + str(ylinaikapress).replace(str(singleyear) + "-", "")
             alinhintaprint = "Alin: " + str(alinhinta) + "      " + str(alinaikapress).replace(str(singleyear) + "-", "")
             lcd.clear()
