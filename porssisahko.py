@@ -26,7 +26,8 @@ date = datetime.now(timezone.utc)
 nyt_str = date.strftime("%Y-%m-%dT%H:%M:%S")
 date = datetime.strptime(nyt_str, "%Y-%m-%dT%H:%M:%S")
 date = date.replace(tzinfo=ZoneInfo("Europe/Helsinki"))
-date + timedelta(hours=2)
+# Asettakaa raspin kello oikeaan aikaan :D
+#date + timedelta(hours=2)
 sekohinta = [],[],[]
 spothinta = 0
 ylinhinta = 0
@@ -85,8 +86,6 @@ def main_price_thread():
 
             ylinhintaaikaindex = sekohinta[0].index(ylinhinta)
             ylinhintaaika = sekohinta[1][ylinhintaaikaindex]
-            print(ylinhinta, " ", ylinhintaaika)
-            print(alinhinta, " ", alinhintaaika)
             sleep(ISOVIIVE)
     except Exception as e: 
        print(e)
@@ -107,7 +106,6 @@ def spot_price_thread():
             spotresponse = requests.get(spot_url)
             o = json.loads(spotresponse.text)
             spothinta = o['price']
-            logging.debug(str(spothinta))
             print("Spothinta ", spothinta, " ", nyt_aika)
             sleep(SPOTVIIVE)
     except Exception as e: 
