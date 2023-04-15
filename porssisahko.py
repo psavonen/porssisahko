@@ -129,8 +129,6 @@ def price_print_thread():
             ylinaikapress = ylinaikapress.strftime("%d-%m %H:%M")
             alinaikapress = alinaikapress.strftime("%d-%m %H:%M")
             nythinta = "Nyt: " + str(spothinta) + "       " + str(nytaika)
-            log = "Printista: ", str(spothinta)
-            logging.debug(log)
             ylinhintaprint = "Ylin: " + str(ylinhinta) + "     " + str(ylinaikapress).replace(str(singleyear) + "-", "")
             alinhintaprint = "Alin: " + str(alinhinta) + "      " + str(alinaikapress).replace(str(singleyear) + "-", "")
             lcd.clear()
